@@ -1,0 +1,7 @@
+name = "Fast Chemical Synapse"
+kind = "fast_chemical_synapse"
+version = "0.1.0"
+description = "Fast chemical synapse model with pre/post inputs."
+library = "libfast_chemical_synapse.so"
+
+api_version = 2
