@@ -1,0 +1,11 @@
+[package]
+name = "fast-chemical-synapse"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rtsyn_plugin = { git = "https://github.com/rtsyn-dev/rtsyn-plugin" }
+serde_json = "1"
+
+[lib]
+crate-type = ["cdylib"]

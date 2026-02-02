@@ -1,0 +1,36 @@
+name = "Fast Chemical Synapse"
+kind = "fast_chemical_synapse"
+version = "0.1.0"
+description = "Fast chemical synapse model with pre/post inputs."
+supports_start_stop = true
+supports_restart = true
+library = "libfast-chemical-synapse.so"
+extendable_inputs = false
+auto_extend_inputs = false
+connection_dependent = false
+loads_started = true
+
+[[inputs]]
+name = "pre"
+
+[[inputs]]
+name = "post"
+
+[[outputs]]
+name = "i_syn"
+
+[[variables]]
+name = "g_fast"
+default = 0.208
+
+[[variables]]
+name = "e_syn"
+default = -1.92
+
+[[variables]]
+name = "s_fast"
+default = 0.44
+
+[[variables]]
+name = "v_fast"
+default = -1.66
