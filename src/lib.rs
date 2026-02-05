@@ -102,13 +102,16 @@ extern "C" fn destroy(handle: *mut c_void) {
 }
 
 extern "C" fn meta_json(_: *mut c_void) -> PluginString {
-    PluginString::from_string(
-        serde_json::json!({
-            "name": "Fast Chemical Synapse",
-            "kind": "fast_chemical_synapse"
-        })
-        .to_string(),
-    )
+    let value = serde_json::json!({
+        "name": "Fast Chemical Synapse",
+        "default_vars": [
+            ["g_fast", 0.208],
+            ["e_syn", -1.92],
+            ["s_fast", 0.44],
+            ["v_fast", -1.66]
+        ]
+    });
+    PluginString::from_string(value.to_string())
 }
 
 extern "C" fn inputs_json(_: *mut c_void) -> PluginString {
@@ -118,6 +121,25 @@ extern "C" fn inputs_json(_: *mut c_void) -> PluginString {
 extern "C" fn outputs_json(_: *mut c_void) -> PluginString {
     PluginString::from_string(serde_json::to_string(OUTPUTS).unwrap())
 }
+extern "C" fn behavior_json(_handle: *mut c_void) -> PluginString {
+    let behavior = serde_json::json!({
+        "supports_start_stop": true,
+        "supports_restart": true,
+        "extendable_inputs": {"type": "none"},
+        "loads_started": true
+    });
+    PluginString::from_string(behavior.to_string())
+}
+
+extern "C" fn ui_schema_json(_handle: *mut c_void) -> PluginString {
+    let schema = serde_json::json!({
+        "outputs": ["i_syn"],
+        "inputs": [],
+        "variables": ["g_fast"]
+    });
+    PluginString::from_string(schema.to_string())
+}
+
 
 extern "C" fn set_config_json(handle: *mut c_void, data: *const u8, len: usize) {
     if handle.is_null() || data.is_null() {
@@ -158,7 +180,7 @@ extern "C" fn set_input(handle: *mut c_void, port: *const u8, len: usize, value:
     }
 }
 
-extern "C" fn process(handle: *mut c_void, tick: u64) {
+extern "C" fn process(handle: *mut c_void, tick: u64, _period: f64) {
     if handle.is_null() {
         return;
     }
@@ -190,6 +212,8 @@ pub extern "C" fn rtsyn_plugin_api() -> *const PluginApi {
         meta_json,
         inputs_json,
         outputs_json,
+        behavior_json: Some(behavior_json),
+        ui_schema_json: Some(ui_schema_json),
         set_config_json,
         set_input,
         process,
