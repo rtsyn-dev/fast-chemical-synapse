@@ -131,7 +131,7 @@ extern "C" fn behavior_json(_handle: *mut c_void) -> PluginString {
     PluginString::from_string(behavior.to_string())
 }
 
-extern "C" fn ui_schema_json(_handle: *mut c_void) -> PluginString {
+extern "C" fn display_schema_json(_handle: *mut c_void) -> PluginString {
     let schema = serde_json::json!({
         "outputs": ["i_syn"],
         "inputs": [],
@@ -213,7 +213,8 @@ pub extern "C" fn rtsyn_plugin_api() -> *const PluginApi {
         inputs_json,
         outputs_json,
         behavior_json: Some(behavior_json),
-        ui_schema_json: Some(ui_schema_json),
+        display_schema_json: Some(display_schema_json),
+        ui_schema_json: None,
         set_config_json,
         set_input,
         process,
@@ -221,4 +222,3 @@ pub extern "C" fn rtsyn_plugin_api() -> *const PluginApi {
     };
     &API
 }
-
